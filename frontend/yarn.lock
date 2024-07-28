@@ -9261,6 +9261,11 @@
   dependencies:
     "minimalistic-assert" "^1.0.0"
 
+"web-vitals@^4.2.2":
+  "integrity" "sha512-nYfoOqb4EmElljyXU2qdeE76KsvoHdftQKY4DzA9Aw8DervCg2bG634pHLrJ/d6+B4mE3nWTSJv8Mo7B2mbZkw=="
+  "resolved" "https://registry.npmjs.org/web-vitals/-/web-vitals-4.2.2.tgz"
+  "version" "4.2.2"
+
 "webidl-conversions@^4.0.2":
   "integrity" "sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg=="
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.2.tgz"

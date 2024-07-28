@@ -4,10 +4,26 @@ var mongoose = require('mongoose'),
 /**
  * User Schema
  */
+
+
+
 var userSchema = new Schema({
-    fullName: {
+    first_name: {
         type: String,
-        required: [true, "fullname not provided "],
+        required: [true, "first_name not provided "],
+    },
+    last_name: {
+        type: String,
+        required: [true, "first_name not provided "],
+    },
+    mobile_number: {
+        type: String,
+        required: [true, "mobile number not provided "], validate: {
+            validator: function (v) {
+                return /^\+254[17]\d{8}$/.test(v);
+            },
+            message: '{VALUE} is not a valid mobile number!'
+        }
     },
     email: {
         type: String,
@@ -21,16 +37,19 @@ var userSchema = new Schema({
             },
             message: '{VALUE} is not a valid email!'
         }
-
     },
     role: {
         type: String,
-        enum: ["normal", "admin"],
+        enum: ["agent", "admin"],
         required: [true, "Please specify user role"]
     },
     password: {
         type: String,
         required: true
+    },
+    personel_id: {
+        type: String,
+        default: () => `user_${Math.random().toString(36).substr(2, 9)}`
     },
     created: {
         type: Date,
