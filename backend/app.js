@@ -168,6 +168,43 @@ app.get('/profile', verifyToken, async (req, res) => {
 
 
 // Protected route
+app.get('/admin/users', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+        // Initialize the where object
+        const where = {};
+
+        // Conditionally add status filter
+        if (req.query.email) {
+            where.email = req.query.email;
+        }
+
+        if (req.query.first_name) {
+            where.first_name = req.query.first_name;
+        }
+
+        if (req.query.last_name) {
+            where.last_name = req.query.last_name;
+        }
+
+        if (req.query.mobile_number) {
+            where.mobile_number = req.query.mobile_number;
+        }
+        if (req.query.role) {
+            where.role = req.query.role;
+        }
+
+        const users = await User.findAll({
+            where: where,
+            attributes: ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'role']
+        });
+
+        res.status(200).send(users);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+});
+
+
 app.get('/admin/agents', verifyToken, verifyAdmin, async (req, res) => {
     try {
         // Initialize the where object
@@ -176,6 +213,12 @@ app.get('/admin/agents', verifyToken, verifyAdmin, async (req, res) => {
         // Conditionally add status filter
         if (req.query.status) {
             where.status = req.query.status;
+        }
+        if (req.query.category) {
+            where.category = req.query.category;
+        }
+        if (req.query.agent_no) {
+            where.agent_no = req.query.agent_no;
         }
 
         const users = await Agent.findAll({
@@ -224,6 +267,17 @@ app.get('/admin/tasks', verifyToken, verifyAdmin, async (req, res) => {
         // Conditionally add status filter
         if (req.query.status) {
             where.status = req.query.status;
+        }
+        if (req.query.category) {
+            where.category = req.query.category;
+        }
+
+        if (req.query.report_title) {
+            where.report_title = req.query.report_title;
+        }
+
+        if (req.query.case_no) {
+            where.case_no = req.query.case_no;
         }
 
         const users = await Task.findAll({
