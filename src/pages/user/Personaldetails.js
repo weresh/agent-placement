@@ -1,7 +1,27 @@
-import React from 'react'
+import React , { useState, useEffect } from 'react';
 import { RiAccountPinBoxFill } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 
-const personaldetails = () => {
+const Personaldetails = () => {
+
+    const [user, setUser] = useState(null);
+    const navigate= useNavigate()
+  
+    useEffect(() => {
+      const userData = JSON.parse(sessionStorage.getItem('user'));
+      if (userData) {
+        setUser(userData);
+      }
+      if(!userData){
+        navigate("/login")
+      }
+  
+    }, []);
+  
+    if (!user) {
+      return <div>Loading...</div>;
+    }
+
   return (
     <div className="">
       <div >
@@ -18,40 +38,25 @@ const personaldetails = () => {
               </div>
           </div>
           <hr className=" border-2 border-black my-8 "></hr>
-          <form action="" className="flex flex-col gap-5 ml-10">
-              <div className="flex">
-                  <label for="name" id="name" className="font-bold">Agent Name :</label>
-                  <input type="text" placeholder="Were Sheila" className="w-1/2 py-2 px-4 ml-4 bg-gray-200 rounded-2xl "></input>
-              </div>
-            
-              <div className="flex">
-                  <label for="email" id="email" className="font-bold">Email :</label>
-                  <input type="email" placeholder="weresh@gmail.com" className="w-1/2 py-2 px-4 ml-16 bg-gray-200 rounded-2xl"></input>
-              </div>
-              
-              <div className="flex">
-                  <label for="tel" id="tel" className="font-bold">Phone No. :</label>
-                  <input type="tel" placeholder="07200344532" className="w-1/2 py-2 px-4 ml-6 bg-gray-200 rounded-2xl"></input>
-              </div>
-
-              <div className="flex">
-                  <label for="agentid" id="agentid" className="font-bold">Agent ID :</label>
-                  <input type="text" placeholder="AG001" className="w-1/2 py-2 px-4 ml-8 bg-gray-200 rounded-2xl"></input>
-              </div>
-              <div className="flex">
+          <div  className=" p-6 text-left rounded-lg w-full max-w-md">
+            <p><strong>Firstname:</strong> {user.firstName}</p>
+            <p><strong>Lastname:</strong> {user.lastName}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Phone No:</strong> {user.phone}</p>
+            <p><strong>Agent ID:</strong> {user.personelid}</p>
+            <div className="flex">
                 <label for="category" className="font-bold">Category :</label>
                 <select id="category" className="w-1/4 bg-gray-200 py-2 px-4 ml-10 rounded-lg">
                     <option value="select category">Select Category</option>
                     <option value="field">Field</option>
                     <option value="desk">Desk</option>
                 </select>
-              </div>
+            </div>
              
-              <input type="submit" value="SUBMIT" className="bg-green-600 font-semibold px-4 py-2 rounded-2xl w-1/2 mx-auto"></input>
-          </form>
+          </div>
       </div>
 </div>
   )
 }
 
-export default personaldetails
+export default Personaldetails

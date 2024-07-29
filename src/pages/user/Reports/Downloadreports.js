@@ -1,17 +1,44 @@
 import React from 'react'
 
 const Downloadreports = () => {
+
+  const handleSaveFile = () => {
+    // Content for the file
+    const content = "Hello, this is the content of the file!";
+    
+    // Create a Blob with the file content
+    const blob = new Blob([content], { type: 'text/plain' });
+    
+    // Create a link element
+    const link = document.createElement('a');
+    
+    // Create a URL for the Blob and set it as the href attribute of the link
+    link.href = URL.createObjectURL(blob);
+    
+    // Set the download attribute with a filename
+    link.download = 'example.txt';
+    
+    // Append the link to the document body and trigger the click event
+    document.body.appendChild(link);
+    link.click();
+    
+    // Remove the link from the document
+    document.body.removeChild(link);
+};
+
+
   return (
     <div className="min-h-screen bg-white p-4 rounded-md">
       <div className="flex justify-between mb-4">
         <h2 className="text-xl font-semibold">Download Reports</h2>
-        <button className="bg-red-500 flex items-center text-xs font-semibold text-white px-4 py-1 rounded-lg">
-        <span>
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M23.75 16.2476H16.25V23.7476H13.75V16.2476H6.25V13.7476H13.75V6.24756H16.25V13.7476H23.75V16.2476Z" fill="white"/>
-        </svg>
-        </span>
-            NEW REPORT</button>
+        <button onClick={handleSaveFile} className="bg-red-500 flex items-center text-xs font-semibold text-white px-4 py-1 rounded-lg">
+          <span>
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23.75 16.2476H16.25V23.7476H13.75V16.2476H6.25V13.7476H13.75V6.24756H16.25V13.7476H23.75V16.2476Z" fill="white"/>
+          </svg>
+          </span>
+              DOWNLOAD REPORT
+        </button>
       </div>
       <div className=' flex text-left gap-6 font-semibold text-sm py-3 px-6'>
         <button>ALL</button>

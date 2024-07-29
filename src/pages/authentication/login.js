@@ -1,14 +1,56 @@
 import React, { useState } from 'react';
+import { toast, Toaster } from 'react-hot-toast';
 
 const Login = () => {
-const [username, setUsername]=useState('')
+const [personelid, setPersonelid]=useState('')
 const [password, setPassword]=useState('')
 const [remember, setRemember] = useState(false);
+console.log(sessionStorage.getItem('authenticated'));
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-
-};
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      const response= await fetch('http://localhost:5000/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          personelid,
+          password
+        })
+      })
+      if(response.ok){
+        console.log('Login successful', response);
+        const userData = await response.json();
+        sessionStorage.setItem('user', JSON.stringify(userData));
+        toast.success('Login successful',{
+          duration: 3000,
+          position: 'top-right',
+        });
+        
+        if (userData.accountType==='agent'){
+          window.location.href='/user/personaldetails';
+        }else{
+          window.location.href='/admin/adminpersonaldetails';
+        }
+      }else{
+        console.log('Login failed', response);
+        toast.error('Invalid email or password',{
+          duration: 3000,
+          position: 'top-center',
+        });
+      }
+    } catch(error){
+      toast.error('Internal Server Error Try Again',{
+        duration: 3000,
+        position: 'top-center',
+      });
+      console.error('Error logging in', error);
+      alert('Error logging in');
+    }
+  };
+  
 
   return (
     <div>
@@ -19,7 +61,7 @@ const handleSubmit = (e) => {
             </div>
             <h2 className="text-xl font-semibold text-center mb-4">Welcome Back</h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
             <div className="mb-4">
                 <p className='text-sm text-black '>Don&apos;t have an account yet? <a href='/register'
                 className='text-red-600 hover:underline'>
@@ -34,9 +76,9 @@ const handleSubmit = (e) => {
                 <input 
                 type="text"
                 required 
-                placeholder="Email address / Phone no / Username" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter ID/Username" 
+                value={personelid}
+                onChange={(e) => setPersonelid(e.target.value)}
                 className="w-full px-3 py-2 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
             </div>

@@ -1,20 +1,59 @@
 import React, { useState } from 'react';
 
 const Register = () => {
-const [accountType, setAccountType] = useState('company');
+const [accountType, setAccountType] = useState('account');
 const [firstName, setFirstName]=useState('')
 const [lastName, setLastName]=useState('')
 const [email, setEmail]=useState('')
 const [phone, setPhone]=useState('')
-const [agentid, setAgentid]=useState('')
+const [personelid, setPersonelid]=useState('')
 const [password, setPassword]=useState('')
 const [confirmPassword, setConfirmPassword]=useState('')
-const [agreeTerms, setAgreeTerms]=useState(false)
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+  if (!accountType) {
+    alert("Please select a account type");
+    return;
+  }
+
+  const user = {
+    accountType,
+    firstName,
+    lastName,
+    personelid,
+    email,
+    phone,
+    password
+  };
+  console.log(user);
+  try {
+    const response = await fetch('http://localhost:5000/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+
+    if (response.ok) {
+      alert('User registered successfully');
+      window.location.href = '/login';
+    } else {
+      console.log('Registration failed', response);
+      alert('Registration failed, Try again');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred');
+  }
 };
+
 
   return (
     <div className="min-h-screen flex py-10 items-center justify-center bg-gray-100">
@@ -23,7 +62,7 @@ const handleSubmit = (e) => {
             <img src="/images/logo.png" className='bg-white rounded-full w-40'  alt="Logo" srcset="" />
         </div>
         <h2 className="text-2xl font-semibold text-center mb-6">Register</h2>
-        <form>
+        <form  onSubmit={handleSubmit}>
           <div className="mb-4"> 
             <p className='text-sm text-black text-left'>Enter your details below to get started</p>
             <label className="block text-gray-300 text-left mb-1">Account type</label>
@@ -95,8 +134,8 @@ const handleSubmit = (e) => {
               type="text"
               required 
               placeholder="PersonelID"
-              value={agentid}
-              onChange={(e) => setAgentid(e.target.value)}
+              value={personelid}
+              onChange={(e) => setPersonelid(e.target.value)}
               className="w-full px-3 py-2 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
@@ -123,9 +162,6 @@ const handleSubmit = (e) => {
           <div className="mb-4 flex items-center">
             <input 
               type="checkbox"
-              required
-              checked={agreeTerms}
-              onChange={(e) => setAgreeTerms(e.target.checked)} 
               className="form-checkbox text-red-600 w-10 h-10 md:w-4 md:h-4" 
             />
             <span className="ml-2 text-gray-300 text-sm">By registering, I agree to Childcare Agency <a href="#" className="underline text-[#ff5c5c]">Terms and Conditions</a></span>

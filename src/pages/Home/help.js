@@ -3,7 +3,7 @@ import React from 'react'
 const help = () => {
   return (
     <div className='max-w-5xl mx-auto mt-14'>
-      <div className="font-bold justify-around flex flex-col md:flex-row gap-4 bg-gray-400 mb-3 ">
+      <div className="font-bold justify-around flex flex-col md:flex-row gap-4 bg-green-500 mb-3 ">
         <a href="/"><button>HOME</button></a>
         <a href="/contactus"><button> CONTACT US</button></a>
         <a href="/help"><button>HELP/SUPPORT</button></a>
