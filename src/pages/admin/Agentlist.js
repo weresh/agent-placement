@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Agentlist() {
-  const work= [
-    { agentid: 'AG001', agentname:'Poulet Kisanya', categoryon:'Field', status: 'Busy' },
-    { agentid: 'AG002', agentname: 'Pheric Aggrey', categoryon:'Desk',  status: 'Available' },
-    { agentid: 'AG003', agentname: 'Felisha Lorna', categoryon:'Field', status: 'Busy' },
-    { agentid: 'AG004', agentname: 'Keiera Este', categoryon:'Desk', status: 'Available' },
-   
-  ];
-
+  const [agents, setAgents] = useState([]);
   const [filter, setFilter] = useState('All');
 
-  const filteredCase = work.filter(cases => {
+  useEffect(() => {
+    // Fetch data from the backend
+    fetch('http://localhost:000/agents')
+      .then(response => response.json())
+      .then(data => setAgents(data))
+      .catch(error => console.error('Error fetching agents:', error));
+  }, []);
+
+  const filteredAgents = agents.filter(agent => {
     if (filter === 'All') return true;
-    return cases.status === filter;
+    return agent.status === filter;
   });
 
   return (
@@ -22,7 +23,7 @@ function Agentlist() {
         <h1 className='text-left text-xl md:text-2xl my-5'>AGENT LIST</h1>
         <div className='flex gap-3 font-bold ml-2'>
           <p 
-            className={`pb-2 mx-4 md:px-7  cursor-pointer ${filter === 'All' ? 'border-b border-red-700' : ''}`}
+            className={`pb-2 mx-4 md:px-7 cursor-pointer ${filter === 'All' ? 'border-b border-red-700' : ''}`}
             onClick={() => setFilter('All')}
           >ALL</p>
           <p 
@@ -30,46 +31,46 @@ function Agentlist() {
             onClick={() => setFilter('Available')}
           >AVAILABLE</p>
           <p 
-            className={`pb-2 mx-4 md:px-7  cursor-pointer ${filter === 'Busy' ? 'border-b border-red-700' : ''}`}
+            className={`pb-2 mx-4 md:px-7 cursor-pointer ${filter === 'Busy' ? 'border-b border-red-700' : ''}`}
             onClick={() => setFilter('Busy')}
           >BUSY</p>
         </div>
         <div className='border border-black my-2 overflow-x-auto rounded-lg '>
-              <button className='float-end my-10 p-3 flex items-center gap-2 text-[#BC3333] font-bold'>
-                <span>
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 15L3.75 8.75L5.5 6.9375L8.75 10.1875V0H11.25V10.1875L14.5 6.9375L16.25 8.75L10 15ZM2.5 20C1.8125 20 1.22417 19.7554 0.735 19.2662C0.245833 18.7771 0.000833333 18.1883 0 17.5V13.75H2.5V17.5H17.5V13.75H20V17.5C20 18.1875 19.7554 18.7762 19.2663 19.2662C18.7771 19.7562 18.1883 20.0008 17.5 20H2.5Z" fill="#BC3333"/>
-                  </svg>
-                </span>
-                EXPORT
-              </button>
-              <button className='float-end my-10 p-3 flex items-center gap-2 text-[#BC3333] font-bold'>
-                <span>
-                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.535714 3.86719H14.4643C14.7602 3.86719 15 3.65733 15 3.39844V2.22656C15 1.96767 14.7602 1.75781 14.4643 1.75781H0.535714C0.239833 1.75781 0 1.96767 0 2.22656V3.39844C0 3.65733 0.239833 3.86719 0.535714 3.86719ZM0.535714 8.55469H14.4643C14.7602 8.55469 15 8.34483 15 8.08594V6.91406C15 6.65517 14.7602 6.44531 14.4643 6.44531H0.535714C0.239833 6.44531 0 6.65517 0 6.91406V8.08594C0 8.34483 0.239833 8.55469 0.535714 8.55469ZM0.535714 13.2422H14.4643C14.7602 13.2422 15 13.0323 15 12.7734V11.6016C15 11.3427 14.7602 11.1328 14.4643 11.1328H0.535714C0.239833 11.1328 0 11.3427 0 11.6016V12.7734C0 13.0323 0.239833 13.2422 0.535714 13.2422Z" fill="#BC3333"/>
-                  </svg>
-                </span>
-                DENSITY
-              </button>
-          
+          <button className='float-end my-10 p-3 flex items-center gap-2 text-[#BC3333] font-bold'>
+            <span>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 15L3.75 8.75L5.5 6.9375L8.75 10.1875V0H11.25V10.1875L14.5 6.9375L16.25 8.75L10 15ZM2.5 20C1.8125 20 1.22417 19.7554 0.735 19.2662C0.245833 18.7771 0.000833333 18.1883 0 17.5V13.75H2.5V17.5H17.5V13.75H20V17.5C20 18.1875 19.7554 18.7762 19.2663 19.2662C18.7771 19.7562 18.1883 20.0008 17.5 20H2.5Z" fill="#BC3333"/>
+              </svg>
+            </span>
+            EXPORT
+          </button>
+          <button className='float-end my-10 p-3 flex items-center gap-2 text-[#BC3333] font-bold'>
+            <span>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.535714 3.86719H14.4643C14.7602 3.86719 15 3.65733 15 3.39844V2.22656C15 1.96767 14.7602 1.75781 14.4643 1.75781H0.535714C0.239833 1.75781 0 1.96767 0 2.22656V3.39844C0 3.65733 0.239833 3.86719 0.535714 3.86719ZM0.535714 8.55469H14.4643C14.7602 8.55469 15 8.34483 15 8.08594V6.91406C15 6.65517 14.7602 6.44531 14.4643 6.44531H0.535714C0.239833 6.44531 0 6.65517 0 6.91406V8.08594C0 8.34483 0.239833 8.55469 0.535714 8.55469ZM0.535714 13.2422H14.4643C14.7602 13.2422 15 13.0323 15 12.7734V11.6016C15 11.3427 14.7602 11.1328 14.4643 11.1328H0.535714C0.239833 11.1328 0 11.3427 0 11.6016V12.7734C0 13.0323 0.239833 13.2422 0.535714 13.2422Z" fill="#BC3333"/>
+              </svg>
+            </span>
+            DENSITY
+          </button>
+        
           <table className="w-full table-auto">
             <thead>
               <tr className="">
-		<th className="px-4 py-2 text-start border border-gray-400"> AGENT NAME</th>
-		<th className="px-4 py-2 text-start border border-gray-400"> AGENT ID</th>
-                <th className="px-4 py-2 text-start border border-gray-400 "><p>CATEGORY ON</p></th>
+                <th className="px-4 py-2 text-start border border-gray-400"> AGENT NAME</th>
+                <th className="px-4 py-2 text-start border border-gray-400"> AGENT ID</th>
+                <th className="px-4 py-2 text-start border border-gray-400 ">CATEGORY ON</th>
                 <th className="px-4 py-2 text-start border border-gray-400">Status</th>
               </tr>
             </thead>
             <tbody>
-              {filteredCase.map(cases=> (
-                <tr key={cases.id}>
-		  <td className="px-4 py-2 border border-black">{cases.agentname}</td>
-                  <td className="px-4 py-2 border border-black">{cases.agentid}</td>
-		  <td className="px-4 py-2 border border-black">{cases.categoryon}</td>
+              {filteredAgents.map(agent => (
+                <tr key={agent.agentid}>
+                  <td className="px-4 py-2 border border-black">{agent.agentname}</td>
+                  <td className="px-4 py-2 border border-black">{agent.agentid}</td>
+                  <td className="px-4 py-2 border border-black">{agent.categoryon}</td>
                   <td className="px-4 py-2 border border-black">
-                    <p className={`border p-1 rounded-xl ${cases.status === 'Available' ? 'border-green-600' : 'border-red-600'}`}>
-                      {cases.status}
+                    <p className={`border p-1 rounded-xl ${agent.status === 'Available' ? 'border-green-600' : 'border-red-600'}`}>
+                      {agent.status}
                     </p>
                   </td>
                 </tr>
@@ -89,20 +90,18 @@ function Agentlist() {
                 </span>
             </button>
 
-            <span className="mx-2">1 of 1</span>
-
             <button className="px-4 py-2 rounded-md">
-              <span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3.69132 14.5907C3.79916 14.6468 3.92025 14.6725 4.04157 14.665C4.1629 14.6575 4.27989 14.617 4.37998 14.5481L13.0467 8.54806C13.1352 8.48671 13.2076 8.4048 13.2576 8.30936C13.3075 8.21393 13.3337 8.1078 13.3337 8.00006C13.3337 7.89232 13.3075 7.78619 13.2576 7.69076C13.2076 7.59532 13.1352 7.51341 13.0467 7.45206L4.37998 1.45206C4.27997 1.38286 4.16292 1.34233 4.04153 1.33487C3.92013 1.32742 3.79901 1.35331 3.69127 1.40975C3.58354 1.4662 3.49329 1.55104 3.43032 1.65509C3.36734 1.75914 3.33403 1.87843 3.33398 2.00006V14.0001C3.33396 14.1218 3.36725 14.2411 3.43024 14.3452C3.49323 14.4494 3.58352 14.5343 3.69132 14.5907Z" fill="black"/>
-                  </svg>
-              </span>
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.046 7.45201L4.3794 1.45198C4.27935 1.38277 4.16225 1.34224 4.04083 1.33481C3.9194 1.32737 3.79822 1.35331 3.69048 1.40983C3.58273 1.46635 3.49256 1.55129 3.42955 1.65543C3.36654 1.75957 3.33329 1.8789 3.33333 2.00058V14C3.33329 14.1217 3.36654 14.241 3.42955 14.3452C3.49256 14.4493 3.58273 14.5343 3.69048 14.5908C3.79822 14.6473 3.9194 14.6733 4.04083 14.6658C4.16225 14.6583 4.27935 14.6178 4.3794 14.5486L13.046 8.5486C13.1343 8.48698 13.2064 8.40495 13.2562 8.30949C13.306 8.21402 13.332 8.10794 13.332 8.00027C13.332 7.8926 13.306 7.78652 13.2562 7.69105C13.2064 7.59559 13.1343 7.51356 13.046 7.45201Z" fill="black"/>
+                    </svg>
+                </span>
             </button>
           </div>
-      </div>
+        </div>
       </div>
     </main>
   );
 }
 
-export default  Agentlist;
+export default Agentlist;

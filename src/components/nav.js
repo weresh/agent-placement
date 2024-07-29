@@ -127,6 +127,8 @@ function Navbar() {
                     </li>
                    
                 </ul>
+                <NavLink to='/login' className='text-white uppercase bg-[#BC3333} w-18 p-6 text-center'>logout </NavLink>
+
                 </div>
             </aside>
     </div>

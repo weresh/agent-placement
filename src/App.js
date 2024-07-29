@@ -7,7 +7,6 @@ import Personaldetails from './pages/user/Personaldetails'
 import Location from './pages/user/Location';
 import Workassigned from './pages/user/workassigned';
 import Completionreport from './pages/user/Reports/Completionreport';
-import Downloadreports from './pages/user/Reports/Downloadreports';
 import Previoustasks from './pages/user/Previoustasks';
 import Accountsettings from './pages/user/Accountsettings';
 import Register from './pages/authentication/register';
@@ -56,7 +55,6 @@ function Main() {
                 <Route path="/user/location"element={<Location/>}/>
                 <Route path="/user/workassigned"element={<Workassigned/>}/>
                 <Route path="/user/reports/completionreport"element={<Completionreport/>}/>
-                <Route path="/user/reports/downloadreports"element={<Downloadreports/>}/>
                 <Route path="/user/previoustasks"element={<Previoustasks/>}/>
                 <Route path="/user/accountsettings"element={<Accountsettings/>}/>
               {/*Admin routes*/}

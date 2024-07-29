@@ -14,7 +14,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '4586',
     database: 'agentcare'
 })
 db.connect((err) => {
@@ -175,10 +175,13 @@ app.post('/api/completionreport', (req, res) => {
 // Update user data
 app.put('/api/user/accountsettings/:id', (req, res) => {
     const userId = req.params.id;
-    const { firstName, lastName, email, phone, password } = req.body;
+    const {  email, phone, fname, lname, password } = req.body;
+    console.log(email, phone, fname, lname, password, userId )
+    // enda submit ile form sasa nichange any data? yeah bt weka valid coz it might work. now try again to submit the form
+
   
-    const query = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE id = ?';
-    const values = [firstName, lastName, email, phone, password, userId];
+    const query = 'UPDATE users SET firstName = ?, lastName = ?, email = ?, phone = ?, password = ? WHERE personelid = ?';
+    const values = [fname, lname, email, phone, password, userId];
   
     db.query(query, values, (err, result) => {
       if (err) {
@@ -196,7 +199,30 @@ app.put('/api/user/accountsettings/:id', (req, res) => {
     });
   });
 
-  //get updated user data
+
+
+  // Route to get all agents
+// Route to get agents
+//app.get('/agents', (req, res) => {
+ // db.query('SELECT * FROM agent', (err, results) => {
+//     if (err) throw err;
+//     res.json(results);
+//   });
+// });
+app.get('/api/agents', (req, res) => {
+    const query = 'SELECT * FROM agents';
+    db.query(query, (err, result) => {
+      if (err) {
+        console.error('Error retrieving agents:', err);
+        res.status(500).send('Internal server error');
+        return;
+      }
+      res.status(200).json(result);
+    });
+  });
+
+
+  
   
 
 

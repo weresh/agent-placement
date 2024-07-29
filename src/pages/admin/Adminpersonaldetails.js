@@ -40,8 +40,8 @@ const Adminpersonaldetails = () => {
           </div>
           <hr className=" border-2 border-black my-8 "></hr>
           <div className=" p-6 text-left rounded-lg w-full max-w-md">
-            <p><strong>Firstname:</strong> {user.first_name}</p>
-            <p><strong>Lastname:</strong> {user.last_name}</p>
+            <p><strong>Firstname:</strong> {user.firstName}</p>
+            <p><strong>Lastname:</strong> {user.lastName}</p>
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Phone No:</strong> {user.phone}</p>
             <p><strong>Admin ID:</strong> {user.personelid}</p>
