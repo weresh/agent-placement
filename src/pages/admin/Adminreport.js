@@ -57,7 +57,7 @@ const Adminreport = () => {
           <table className="w-full px-3 table-auto">
             <thead>
               <tr className='text-sm text-gray-500'>
-                <th className="px-4 py-2 text-start border-l border-gray-400">CASE ID</th>
+                <th className="px-4 py-2 text-start border-l border-gray-400">USER ID</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400">CATEGORY</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400">REPORT&nbsp;TITLE</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400 whitespace-nowrap">DATE STARTED</th>
