@@ -14,7 +14,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'gitaujustus',
+    password: '4586',
     database: 'agentcare'
 })
 db.connect((err) => {
@@ -34,15 +34,15 @@ app.get('/', (req, res) => {
 // Register route
 app.post('/api/register', async (req, res) => {
   console.log("Executed", req.body);
-    const { accountType , firstName, lastName, email, phone, personelid, password ,confirmpassword  } = req.body;
+    const { accountType , firstName, lastName, email, phone, personelid, password } = req.body;
   
     // Insert user into the database
     const query = `
-      INSERT INTO users (accountType , firstName, lastName, email, phone, personelid, password ,confirmpassword )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO users (accountType , firstName, lastName, email, phone, personelid, password  )
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
    
-    const values = [accountType, firstName, lastName, email, phone, personelid, password ,confirmpassword];
+    const values = [accountType, firstName, lastName, email, phone, personelid, password];
   
     db.query(query, values, (err, result) => {
       if (err) {
@@ -128,7 +128,7 @@ app.get('/api/agents', (req, res) => {
     const query = `
       SELECT cr.*, u.firstName, u.lastName, u.email, u.phone
       FROM completion_reports cr
-      LEFT JOIN users u ON cr.user_id = u.personelid
+      LEFT JOIN users u ON cr.caseid = u.personelid
     `;
     db.query(query, (err, result) => {
       if (err) {
@@ -367,12 +367,12 @@ app.put('/api/tasks/:id/status', (req, res) => {
 // completion report
 app.post('/api/completionreport/:userId', (req, res) => {
   const userId = req.params.userId;
-  const { datestarted, datecompleted, caseid, category, reporttitle, summary } = req.body;
+  const { datestarted, datecompleted, category, reporttitle, summary } = req.body;
   // console.log(datestarted, datecompleted, caseid, category, reporttitle, summary);
   
-  const query = 'INSERT INTO completion_reports (date_started, date_completed, case_id, category, report_title, summary, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const query = 'INSERT INTO completion_reports (datestarted, datecompleted, caseid, category, reporttitle, summary) VALUES ( ?, ?, ?, ?, ?, ?)';
   
-  db.query(query, [datestarted, datecompleted, caseid, category,  reporttitle, summary, userId], (err, result) => {
+  db.query(query, [datestarted, datecompleted, userId, category,  reporttitle, summary], (err, result) => {
     if (err) {
       console.error('Error submitting report:', err);
       return res.status(500).json({ error: err.message });
@@ -382,20 +382,7 @@ app.post('/api/completionreport/:userId', (req, res) => {
   });
 });
   
-// // update the locations
-// app.post('/api/user/updateLocation', (req, res) => {
-//   const { personelid, current_location, destination, is_field_work } = req.body;
 
-//   const sql = 'INSERT INTO agent_locations (personelid, current_location, destination, is_field_work) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE current_location = VALUES(current_location), destination = VALUES(destination), is_field_work = VALUES(is_field_work)';
-
-//   db.query(sql, [personelid, current_location, destination, is_field_work], (err, result) => {
-//     if (err) {
-//       console.error(err);
-//       return res.status(500).json({ error: 'Failed to update location' });
-//     }
-//     res.status(200).json({ message: 'Location updated successfully' });
-//   });
-// });
 
 app.post('/api/user/updateLocation', (req, res) => {
   const { personelid, location } = req.body;

@@ -90,7 +90,7 @@ import toast, {Toaster} from 'react-hot-toast';
 
 const Location = () => {
   const [isFieldWork, setIsFieldWork] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31911.07847960325!2d36.69161647431641!3d-1.2394502999999935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f18f1be0c242b%3A0xa1437da794151da0!2sChildline%20Kenya%20(116)!5e0!3m2!1sen!2ske!4v1718053776548!5m2!1sen!2ske');
+  const [currentLocation, setCurrentLocation] = useState('');
   const [destination, setDestination] = useState('');
 
   useEffect(() => {

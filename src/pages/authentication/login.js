@@ -103,7 +103,6 @@ const handleSubmit = async (e) => {
             <div className="mb-4 flex items-center">
                 <input 
                 type="checkbox"
-                required
                 checked={remember}
                 onChange={(e) => setRemember(e.target.checked)} 
                 className="form-checkbox text-red-600 w-4 h-4" 

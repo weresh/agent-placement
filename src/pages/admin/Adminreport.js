@@ -11,6 +11,7 @@ const Adminreport = () => {
       .then(data => setReports(data))
       .catch(error => console.error('Error fetching reports:', error));
   }, []);
+  console.log(reports)
 
   const downloadPDF = () => {
     const doc = new jsPDF();
@@ -58,7 +59,6 @@ const Adminreport = () => {
               <tr className='text-sm text-gray-500'>
                 <th className="px-4 py-2 text-start border-l border-gray-400">CASE ID</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400">CATEGORY</th>
-                <th className="px-4 py-2 text-start border-l border-gray-400">ROUTE</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400">REPORT&nbsp;TITLE</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400 whitespace-nowrap">DATE STARTED</th>
                 <th className="px-4 py-2 text-start border-l border-gray-400 whitespace-nowrap">DATE COMPLETED</th>
@@ -72,12 +72,11 @@ const Adminreport = () => {
               {reports.length > 0 ? (
                 reports.map(report => (
                   <tr key={report.id} className='border border-gray-400'>
-                    <td className="px-4 py-2">{report.case_id}</td>
+                    <td className="px-4 py-2">{report.caseid}</td>
                     <td className="px-4 py-2">{report.category}</td>
-                    <td className="px-4 py-2">{report.route}</td>
-                    <td className="px-4 py-2">{report.report_title}</td>
-                    <td className="px-4 py-2">{new Date(report.date_started).toLocaleDateString()}</td>
-                    <td className="px-4 py-2">{new Date(report.date_completed).toLocaleDateString()}</td>
+                    <td className="px-4 py-2">{report.reporttitle}</td>
+                    <td className="px-4 py-2">{new Date(report.datestarted).toLocaleDateString()}</td>
+                    <td className="px-4 py-2">{new Date(report.datecompleted).toLocaleDateString()}</td>
                     <td className="px-4 py-2">{report.summary}</td>
                     <td className="px-4 py-2">{`${report.firstName} ${report.lastName}`}</td>
                     <td className="px-4 py-2">{report.email}</td>
