@@ -30,7 +30,7 @@ const Adminpersonaldetails = () => {
                   A
               </div>
               <div className="flex flex-col px-8 ">
-                  <p className="text-3xl font-bold"> WELCOME ADMIN</p>
+                  <p className="text-3xl font-bold"> WELCOME {user.firstName}</p>
                   <div className='flex'>
                   <RiAccountPinBoxFill />
                   <p>inbox</p>
@@ -39,7 +39,7 @@ const Adminpersonaldetails = () => {
               </div>
           </div>
           <hr className=" border-2 border-black my-8 "></hr>
-          <div className=" p-6 text-left rounded-lg w-full max-w-md">
+          <div className=" p-6 text-left rounded-lg w-full max-w-md ">
             <p><strong>Firstname:</strong> {user.firstName}</p>
             <p><strong>Lastname:</strong> {user.lastName}</p>
             <p><strong>Email:</strong> {user.email}</p>
