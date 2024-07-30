@@ -176,6 +176,12 @@ const handleSubmit = async (e) => {
         <p className="text-center mt-4 text-sm">
           Already have an account? <a href="/login" className="underline text-[#ff5c5c]">Log in</a>
         </p>
+        <div className="mb-4">
+                <p className='text-md text-black py-2'>Login as <a href='/register/guardian'
+                className='text-white hover:underline'>
+                Guardian</a>
+                </p>
+            </div>
       </div>
     </div>
   );

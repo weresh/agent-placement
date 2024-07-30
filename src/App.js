@@ -22,6 +22,9 @@ import Inbox from './pages/admin/inbox';
 import Agentlist from './pages/admin/Agentlist';
 import Adminreport from './pages/admin/Adminreport';
 import Adminaccountsettings from './pages/admin/Adminaccountsettings';
+import GuardianRegister from './pages/authentication/guardiansRegister';
+import LoginGuardians from './pages/authentication/loginGuardians';
+import Dashboard from './pages/guardian/dashboard';
 
 function App() {
   return (
@@ -50,6 +53,9 @@ function Main() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/verification" element={<Verification />} />
                   <Route path="/forgotpassword" element={<Forgotpassword />} />
+                  <Route path="/register/guardian" element={<GuardianRegister />} />
+                  <Route path="/login/guardian" element={<LoginGuardians />} />
+
               {/* User routes */}
                 <Route path="/user/personaldetails"element={<Personaldetails/>}/>
                 <Route path="/user/location"element={<Location/>}/>
@@ -57,6 +63,9 @@ function Main() {
                 <Route path="/user/reports/completionreport"element={<Completionreport/>}/>
                 <Route path="/user/previoustasks"element={<Previoustasks/>}/>
                 <Route path="/user/accountsettings"element={<Accountsettings/>}/>
+
+                {/* Guardian */}
+                <Route path="/guardian/dashboard"element={<Dashboard/>}/>
               {/*Admin routes*/}
                 <Route path="/admin/adminpersonaldetails" element={<Adminpersonaldetails />} />
                 <Route path="/admin/viewlocation" element={<Viewlocation />} />

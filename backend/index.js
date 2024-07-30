@@ -14,7 +14,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '4586',
+    password: 'gitaujustus',
     database: 'agentcare'
 })
 db.connect((err) => {
@@ -57,7 +57,7 @@ app.post('/api/register', async (req, res) => {
   //   Login Route
 app.post('/api/user/login', async (req, res) => {
     const { personelid, password } = req.body;
-    console.log(personelid, password);
+    // console.log(personelid, password);
 
     // Check if the user exists in the database
     const query = `
@@ -75,6 +75,7 @@ app.post('/api/user/login', async (req, res) => {
       }
 
       if (result.length === 0) {
+        console.log("Invalid username or password");
         res.status(401).send('Invalid username or password');
         return;
       }
@@ -89,6 +90,7 @@ app.post('/api/user/login', async (req, res) => {
        personelid:user.personelid,
        
      }
+     console.log("Login succesful");
      res.status(200).json(userData);
    });
  });
@@ -106,61 +108,28 @@ app.get('/api/users', (req, res) => {
  });
 });
 
-// Location route
-app.post('/api/user/agentlocation', async (req, res) => {
-    const { from, destination } = req.body;
-  
-    // Insert location into the database
-    const query = `
-      INSERT INTO agentlocation (from, destination)
-      VALUES (?, ?)
-    `;
-  
-    const values = [from, destination];
-  
-    db.query(query, values, (err, result) => {
+// get all agents in the user table
+app.get('/api/agents', (req, res) => {
+    const query = 'SELECT * FROM users WHERE accountType = "Agent"';
+    db.query(query, (err, result) => {
       if (err) {
-        console.error('Error inserting user:', err);
+        console.error('Error retrieving agents:', err);
         res.status(500).send('Internal server error');
         return;
       }
-      res.status(200).send('Location sent successfully');
+      res.status(200).json(result);
     });
-  });
+   });
 
 
 
-// completionreport
-app.post('/api/completionreport', (req, res) => {
-    const { datestarted, datecompleted, caseid, category, route, reporttitle, summary } = req.body;
-    
-  
-    // SQL query to insert the review
-    const query = `
-      INSERT INTO reports (datestarted, datecompleted, caseid, category, route, reporttitle, summary)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-  
-    const values = [datestarted, datecompleted, caseid, category, route, reporttitle, summary];
-  
-    db.query(query, values, (err, result) => {
-      if (err) {
-        console.error('Error inserting review:', err);
-        res.status(500).send('Internal server error');
-        return;
-      }
-  
-      // Completion report successfully inserted
-      res.status(200).json({
-        message: 'Report submitted successfully',
-        reviewId: result.insertId
-      });
-    });
-  });
-  
-  // get all reports
+  // get reports
   app.get('/api/completionreport', (req, res) => {
-    const query = 'SELECT * FROM reports';
+    const query = `
+      SELECT cr.*, u.firstName, u.lastName, u.email, u.phone
+      FROM completion_reports cr
+      LEFT JOIN users u ON cr.user_id = u.personelid
+    `;
     db.query(query, (err, result) => {
       if (err) {
         console.error('Error retrieving reports:', err);
@@ -201,14 +170,7 @@ app.put('/api/user/accountsettings/:id', (req, res) => {
 
 
 
-  // Route to get all agents
-// Route to get agents
-//app.get('/agents', (req, res) => {
- // db.query('SELECT * FROM agent', (err, results) => {
-//     if (err) throw err;
-//     res.json(results);
-//   });
-// });
+
 app.get('/api/agents', (req, res) => {
     const query = 'SELECT * FROM agents';
     db.query(query, (err, result) => {
@@ -222,7 +184,247 @@ app.get('/api/agents', (req, res) => {
   });
 
 
+
+
+
+  // Register a new guardian
+app.post('/api/guardians/register', async (req, res) => {
+  const { name, phone, email, address, password } = req.body;
+
+  const query = 'INSERT INTO guardians (name, phone, email, address, password) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [name, phone, email, address, password], (err, result) => {
+    if (err) {
+      console.error('Error registering guardian:', err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+    res.status(201).send('Guardian registered successfully');
+  });
+});
+
+// Login a guardian
+app.post('/api/guardians/login', (req, res) => {
+  const { email, password } = req.body;
+
+  const query = 'SELECT * FROM guardians WHERE email = ?';
+  db.query(query, [email], async (err, results) => {
+    if (err) {
+      console.error('Error retrieving guardian:', err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(401).send('Invalid email or password');
+      return;
+    }
+
+    const guardian = results[0];
+    if (password !== guardian.password) {
+      res.status(401).send('Invalid email or password');
+      return;
+    }
+
+    res.status(200).json({ guardian });
+  });
+});
+
+
+// Submitting a tasks by Guardia
+app.post('/api/tasks', (req, res) => {
+  const { title, description, submitted_by, type } = req.body;
+
+  const query = 'INSERT INTO tasks (title, description, submitted_by, type) VALUES (?, ?, ?, ?)';
+  db.query(query, [title, description, submitted_by, type], (err, results) => {
+    if (err) {
+      console.error('Error inserting task:', err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+
+    res.status(201).send('Task created successfully');
+  });
+});
+
+// get all tasks
+app.get('/api/tasks', (req, res) => {
+  const query = 'SELECT * FROM tasks';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving tasks:', err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+
+    res.status(200).json(results);
+  });
+});
+
+
+
+
+
+
+// New endpoint to update assigned agent for multiple tasks
+app.post('/api/tasks/update', (req, res) => {
+  const assignments = req.body; // Expect an object like {taskId: agentId, ...}
+
+  const updatePromises = Object.entries(assignments).map(([taskId, agentId]) => {
+    return new Promise((resolve, reject) => {
+      const query = 'UPDATE tasks SET assigned_agent = ? WHERE id = ?';
+      db.query(query, [agentId || null, taskId], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  });
+
+  Promise.all(updatePromises)
+    .then(() => {
+      res.status(200).json({ message: 'Tasks updated successfully' });
+    })
+    .catch((err) => {
+      console.error('Error updating tasks:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+
+
+// New endpoint to delete a task
+app.delete('/api/tasks/:id', (req, res) => {
+  const taskId = req.params.id;
+
+  const query = 'DELETE FROM tasks WHERE id = ?';
+  db.query(query, [taskId], (err, result) => {
+    if (err) {
+      console.error('Error deleting task:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    if (result.affectedRows === 0) {
+      res.status(404).json({ error: 'Task not found' });
+    } else {
+      res.status(200).json({ message: 'Task deleted successfully' });
+    }
+  });
+});
+
+
+// fetch work assigned to each agent:
+app.get('/api/tasks/agent/:id', (req, res) => {
+  const agentId = req.params.id;
+
+  const query = 'SELECT * FROM tasks WHERE assigned_agent = ?';
+
+  db.query(query, [agentId], (err, results) => {
+    if (err) {
+      console.error('Error retrieving tasks for agent:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ message: 'No tasks found for this agent' });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
+
+
+// New endpoint to update task status
+app.put('/api/tasks/:id/status', (req, res) => {
+  const taskId = req.params.id;
+  const { status } = req.body;
+
+  if (!['Pending', 'In Progress', 'Completed'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  const query = 'UPDATE tasks SET status = ? WHERE id = ?';
+  db.query(query, [status, taskId], (err, result) => {
+    if (err) {
+      console.error('Error updating task status:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    } 
+
+    if (result.affectedRows === 0) {
+      res.status(404).json({ error: 'Task not found' });
+    } else {
+      res.status(200).json({ message: 'Task status updated successfully' });
+    }
+  });
+});
+
+
+// completion report
+app.post('/api/completionreport/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const { datestarted, datecompleted, caseid, category, reporttitle, summary } = req.body;
+  // console.log(datestarted, datecompleted, caseid, category, reporttitle, summary);
   
+  const query = 'INSERT INTO completion_reports (date_started, date_completed, case_id, category, report_title, summary, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  
+  db.query(query, [datestarted, datecompleted, caseid, category,  reporttitle, summary, userId], (err, result) => {
+    if (err) {
+      console.error('Error submitting report:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log("Submitted successfully",result);
+    res.status(200).json({ message: 'Report submitted successfully', reportId: result.insertId });
+  });
+});
+  
+// // update the locations
+// app.post('/api/user/updateLocation', (req, res) => {
+//   const { personelid, current_location, destination, is_field_work } = req.body;
+
+//   const sql = 'INSERT INTO agent_locations (personelid, current_location, destination, is_field_work) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE current_location = VALUES(current_location), destination = VALUES(destination), is_field_work = VALUES(is_field_work)';
+
+//   db.query(sql, [personelid, current_location, destination, is_field_work], (err, result) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).json({ error: 'Failed to update location' });
+//     }
+//     res.status(200).json({ message: 'Location updated successfully' });
+//   });
+// });
+
+app.post('/api/user/updateLocation', (req, res) => {
+  const { personelid, location } = req.body;
+  console.log(personelid, location);
+
+  const query = 'UPDATE users SET location = ? WHERE personelid = ?';
+  db.query(query, [location, personelid], (error, results) => {
+    if (error) {
+      console.error('Error updating location:', error);
+      return res.status(500).send('Error updating location');
+    }
+    res.send('Location updated successfully');
+  });
+});
+
+
+app.get('/api/user/location/:id', (req, res) => {
+  const userId = req.params.id;
+
+  const query = 'SELECT location FROM users WHERE personelid = ?';
+  db.query(query, [userId], (error, results) => {
+    if (error) {
+      console.error('Error fetching user location:', error);
+      return res.status(500).send('Error fetching user location');
+    }
+    res.json(results[0]);
+  });
+});
+
   
 
 

@@ -110,8 +110,17 @@ const handleSubmit = async (e) => {
                 />
                 <div className="mx-2 w-full text-gray-300 text-sm flex flex-wrap justify-between"><span>Remember me</span> <a href="" className="underline text-[#ff5c5c]">Forgot Password?</a></div>
             </div>
+            {/* link to login as guardian */}
+            <div className="mb-4">
+                <p className='text-md text-black '>Login as <a href='/login/guardian'
+                className='text-black hover:underline'>
+                Guardian</a>
+                </p>
+            </div>
+
             </form>
         </div>
+        <Toaster/>
         </div>
     </div>
     
