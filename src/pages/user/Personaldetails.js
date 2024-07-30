@@ -30,7 +30,7 @@ const Personaldetails = () => {
                   W
               </div>
               <div className="flex flex-col px-8 ">
-                  <p className="text-3xl font-bold"> WELCOME AGENT</p>
+                  <p className="text-3xl font-bold"> WELCOME {user.firstName}</p>
                   <div className='flex'>
                   <RiAccountPinBoxFill />
                   <p>inbox</p>

@@ -14,15 +14,13 @@ const contactus = () => {
         <div className="flex justify-center items-center">   
             <div className="max-w-4xl bg-gray-400 flex flex-col md:flex-row rounded-lg">
                 <img src="/images/contactus.png" className='p-8' alt="contactus" srcset="" />
-                <form className="p-5 my-auto">
-                    <label for="text">Full Name :</label>
-                    <input type="text" className="w-full bg-gray-300 rounded-md"></input>
-                    <label for="Email" >Email:</label>
-                    <input type="email" className="w-full bg-gray-300 rounded-md" placeholder="muhonja@gmail.com"></input>
-                    <label>Message:</label>
-                    <input type="text" className="w-full h-24 bg-gray-300 rounded-md"></input>
-                    <button onClick={() => {alert('Request submitted. Response will be sent on email')}} type="submit" value="SUBMIT" className="bg-green-600 font-semibold px-4 py-2 my-3 rounded-2xl w-1/2 mx-auto">SUBMIT</button>
-                </form>
+                <div className='my-auto'>
+                  <h1 className='text-xl font-bold'>GET IN CONTACT WITH US:</h1>
+                  <p className='text-lg  font-bold'>Call:</p>
+                  <p className='text-lg'>116/0720049070</p>
+                  <p className='text-lg  font-bold'>Email:</p>
+                  <p className='text-lg'>116@childlinekenya.co.ke</p>
+                </div>
                 
             </div>
         </div>

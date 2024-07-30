@@ -26,7 +26,7 @@ const GuardianRegister = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center max-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-4 my-4 bg-[#286EDE] rounded shadow-md">
         <h2 className="text-2xl font-bold text-center">Register Guardians</h2>
         <form onSubmit={handleSubmit} className="space-y-4 ">

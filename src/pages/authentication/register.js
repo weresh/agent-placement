@@ -56,7 +56,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="min-h-screen flex py-10 items-center justify-center bg-gray-100">
+    <div className="max-h-screen flex py-10 items-center justify-center bg-gray-100">
       <div className="bg-[#286ede] text-white p-8 rounded-md shadow-md w-full mx-2 max-w-lg">
         <div className="flex justify-center mb-6">
             <img src="/images/logo.png" className='bg-white rounded-full w-40'  alt="Logo" srcset="" />
