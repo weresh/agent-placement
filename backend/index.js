@@ -122,6 +122,19 @@ app.get('/api/agents', (req, res) => {
    });
 
 
+   // get all guardians in the user table
+app.get('/api/guardians', (req, res) => {
+  const query = 'SELECT * FROM guardians ';
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error('Error retrieving guardians:', err);
+      res.status(500).send('Internal server error');
+      return;
+    }
+    res.status(200).json(result);
+  });
+ });
+
 
   // get reports
   app.get('/api/completionreport', (req, res) => {
@@ -182,6 +195,9 @@ app.get('/api/agents', (req, res) => {
       res.status(200).json(result);
     });
   });
+
+
+  
 
 
 

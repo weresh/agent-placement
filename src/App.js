@@ -20,6 +20,7 @@ import Adminpersonaldetails from './pages/admin/Adminpersonaldetails'
 import Viewlocation from './pages/admin/Viewlocation';
 import Inbox from './pages/admin/inbox';
 import Agentlist from './pages/admin/Agentlist';
+import Guardians from './pages/admin/Guardians';
 import Adminreport from './pages/admin/Adminreport';
 import Adminaccountsettings from './pages/admin/Adminaccountsettings';
 import GuardianRegister from './pages/authentication/guardiansRegister';
@@ -71,6 +72,7 @@ function Main() {
                 <Route path="/admin/viewlocation" element={<Viewlocation />} />
                 <Route path="/admin/inbox" element={<Inbox />} />
                 <Route path="/admin/agentlist" element={<Agentlist />} />
+                <Route path="/admin/guardians" element={<Guardians />} />
                 <Route path="/admin/adminreport" element={<Adminreport />} />
                 <Route path="/admin/adminaccountsettings" element={<Adminaccountsettings />} />
             </Routes>

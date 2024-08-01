@@ -111,6 +111,12 @@ function Navbar() {
                             <span className="ms-3 text-md md:text-lg text-white">AGENT LIST</span>
                         </NavLink>
                     </li>
+			        <li className='flex flex-col items-center'>
+                        <NavLink to='/admin/guardians' className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-[#E3B820] group">
+                            <FaRegHourglass size={32} color='white'/>
+                            <span className="ms-3 text-md md:text-lg text-white">GUARDIANS LIST</span>
+                        </NavLink>
+                    </li>
 
     
                     <li>
