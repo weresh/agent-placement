@@ -76,7 +76,7 @@ const handleSubmit = async (e) => {
                 <input 
                 type="text"
                 required 
-                placeholder="Enter ID/Username" 
+                placeholder="Enter ID" 
                 value={personelid}
                 onChange={(e) => setPersonelid(e.target.value)}
                 className="w-full px-3 py-2 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"

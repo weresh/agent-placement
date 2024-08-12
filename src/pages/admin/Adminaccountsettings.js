@@ -172,7 +172,7 @@ const Accountsettings = () => {
                             />
                         </div>
                     </div>
-                    <div className='flex justify-between items-center'>
+                    <div className='flex justify-between items-center gap-2'>
                         <div className="flex flex-col w-[48%]">
                             <label className="text-left font-semibold">Admin first Name :</label>
                             <input
