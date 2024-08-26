@@ -14,7 +14,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '4586',
+    password: 'gitaujustus',
     database: 'agentcare'
 })
 db.connect((err) => {
@@ -281,32 +281,85 @@ app.get('/api/tasks', (req, res) => {
 
 
 
-// New endpoint to update assigned agent for multiple tasks
-app.post('/api/tasks/update', (req, res) => {
-  const assignments = req.body; // Expect an object like {taskId: agentId, ...}
+// // New endpoint to update assigned agent for multiple tasks
+// app.post('/api/tasks/update', (req, res) => {
+//   const assignments = req.body;
 
-  const updatePromises = Object.entries(assignments).map(([taskId, agentId]) => {
-    return new Promise((resolve, reject) => {
-      const query = 'UPDATE tasks SET assigned_agent = ? WHERE id = ?';
-      db.query(query, [agentId || null, taskId], (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
+//   const updatePromises = Object.entries(assignments).map(([taskId, agentId]) => {
+//     return new Promise((resolve, reject) => {
+//       const query = 'UPDATE tasks SET assigned_agent = ? WHERE id = ?';
+//       db.query(query, [agentId || null, taskId], (err, result) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(result);
+//         }
+//       });
+//     });
+//   });
+
+//   Promise.all(updatePromises)
+//     .then(() => {
+//       res.status(200).json({ message: 'Tasks updated successfully' });
+//     })
+//     .catch((err) => {
+//       console.error('Error updating tasks:', err);
+//       res.status(500).json({ error: 'Internal server error' });
+//     });
+// });
+
+
+// New endpoint to assign an agent to a task
+app.post('/api/tasks/:taskId/assign', (req, res) => {
+  const { taskId } = req.params;
+  const { agentId } = req.body;
+
+  const query = 'UPDATE tasks SET assigned_agent = ? WHERE id = ?';
+  db.query(query, [agentId || null, taskId], async (err, result) => {
+    if (err) {
+      console.error('Error assigning agent:', err);
+      res.status(500).json({ error: 'An error occurred while assigning the agent' });
+    } else {
+       // Query to retrieve the guardian's email and name who submitted the task
+     const guardian = await getGuardianDetails(taskId);
+     console.log(guardian);
+     
+
+      res.status(200).json({ 
+        // message: 'Agent assigned successfully' 
+        guardian 
       });
+    }
+  });
+});
+
+
+// Function to get guardian details by taskId
+const getGuardianDetails = (taskId) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT guardians.name, guardians.email 
+      FROM tasks 
+      JOIN guardians ON tasks.submitted_by = guardians.id 
+      WHERE tasks.id = ?
+    `;
+
+    db.query(query, [taskId], (err, rows) => {
+      if (err) {
+        console.log("errorr occureeend");
+        
+        return reject('Error retrieving guardian details:', err);
+      }
+      if (rows.length > 0) {
+        const { name, email } = rows[0];
+        resolve({ name, email });
+      } else {
+        reject('Guardian not found for this task');
+      }
     });
   });
+};
 
-  Promise.all(updatePromises)
-    .then(() => {
-      res.status(200).json({ message: 'Tasks updated successfully' });
-    })
-    .catch((err) => {
-      console.error('Error updating tasks:', err);
-      res.status(500).json({ error: 'Internal server error' });
-    });
-});
 
 
 

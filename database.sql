@@ -132,9 +132,10 @@ CREATE TABLE tasks (
     submitted_by INT NOT NULL,
     type ENUM('Fieldwork', 'Desk Work') NOT NULL,
     FOREIGN KEY (assigned_agent) REFERENCES users(personelid) ON DELETE SET NULL,
-    FOREIGN KEY (submitted_by) REFERENCES guardians(id) ON DELETE CASCADE
+    FOREIGN KEY (submitted_by) REFERENCES guardians(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 
 CREATE TABLE completion_reports (

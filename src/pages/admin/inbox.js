@@ -257,37 +257,101 @@ const Inbox = () => {
     return task.status === filter;
   });
 
-  const handleAgentChange = (taskId, agentId) => {
-    setSelectedAgents(prev => ({ ...prev, [taskId]: agentId }));
-  };
+  // const handleAgentChange = (taskId, agentId) => {
+  //   setSelectedAgents(prev => ({ ...prev, [taskId]: agentId }));
+  // };
 
-  const handleUpdate = async () => {
-    if (!window.confirm('Are you sure you want to update the tasks?')) return;
+  const handleAgentChange = async (taskId, agentId) => {
+    setSelectedAgents(prev => ({ ...prev, [taskId]: agentId }));
     try {
-      const response = await fetch('http://localhost:5000/api/tasks/update', {
+      const response = await fetch(`http://localhost:5000/api/tasks/${taskId}/assign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(selectedAgents),
+        body: JSON.stringify({ agentId }),
       });
-      if (response.ok) {
-        console.log('Tasks updated successfully');
-        toast.success('Tasks updated successfully', {
+      if(!response.ok) {
+        throw new Error('Failed to assign agent');
+      }
+        toast.success('Agent assigned successfully', {
           position: 'top-center',
           duration: 3000
         });
-      } else {
-        throw new Error('Failed to update tasks');
-      }
+        const guardianData= await response.json()
+        
+
+        await notifyGuardian(guardianData)
+      
     } catch (error) {
-      toast.error('Error updating tasks', {
+      toast.error('Error assigning agent', {
         position: 'top-center',
         duration: 3000
       });
-      console.error('Error updating tasks:', error);
+      console.error('Error assigning agent:', error);
     }
   };
+
+  const notifyGuardian=async (guardianData)=>{
+    // console.log();
+    const {guardian}=guardianData;
+    try {
+    const {email, name}= guardian;
+    console.log(email, name);
+      const response= await fetch('http://localhost:8080/api/guardians/notify', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({email, name})
+      })
+      console.log(response)
+      if (!response.ok) {
+        throw new Error('Failed to send notification to guardian')      
+      }
+      toast.success('Notification sent successfully', {
+        position: 'top-center',
+        duration: 3000
+      });
+    } catch (error) {
+      toast.error('Error sending notification to guardian', {
+        position: 'top-center',
+        duration: 3000
+      });
+      console.error('Error sending notification to guardian:', error);
+    }
+  }
+
+
+  
+
+  // const handleUpdate = async () => {
+  //   if (!window.confirm('Are you sure you want to update the tasks?')) return;
+  //   try {
+  //     const response = await fetch('http://localhost:5000/api/tasks/update', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(selectedAgents),
+  //     });
+  //     if (response.ok) {
+  //       console.log('Tasks updated successfully');
+  //       toast.success('Tasks updated successfully', {
+  //         position: 'top-center',
+  //         duration: 3000
+  //       });
+  //     } else {
+  //       throw new Error('Failed to update tasks');
+  //     }
+  //   } catch (error) {
+  //     toast.error('Error updating tasks', {
+  //       position: 'top-center',
+  //       duration: 3000
+  //     });
+  //     console.error('Error updating tasks:', error);
+  //   }
+  // };
 
   const handleDelete = async (taskId) => {
     if (!window.confirm('Are you sure you want to delete this task?')) return;
@@ -379,12 +443,12 @@ const Inbox = () => {
             </span>
             EXPORT
           </button>
-          <button 
+          {/* <button 
             onClick={handleUpdate}
             className='float-end my-10 p-3 flex items-center gap-2 bg-[#BC3333] text-white font-bold rounded'
           >
             UPDATE CHANGES
-          </button>
+          </button> */}
           <table className="w-full table-auto">
           <thead>
               <tr>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Register = () => {
-const [accountType, setAccountType] = useState('account');
+const [accountType, setAccountType] = useState('agent');
 const [firstName, setFirstName]=useState('')
 const [lastName, setLastName]=useState('')
 const [email, setEmail]=useState('')
@@ -65,8 +65,8 @@ const handleSubmit = async (e) => {
         <form  onSubmit={handleSubmit}>
           <div className="mb-4"> 
             <p className='text-sm text-black text-left'>Enter your details below to get started</p>
-            <label className="block text-gray-300 text-left mb-1">Account type</label>
-            <div className="flex space-x-4">
+            <label className="hidden text-gray-300 text-left mb-1">Account type</label>
+            <div className=" space-x-4 hidden">
               <label className="flex items-center">
                 <input 
                   type="radio" 
