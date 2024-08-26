@@ -298,7 +298,7 @@ const Inbox = () => {
     try {
     const {email, name}= guardian;
     console.log(email, name);
-      const response= await fetch('http://localhost:8080/api/guardians/notify', {
+      const response= await fetch('https://mailing-server-six.vercel.app/api/guardians/notify', {
         method: 'POST',
         headers: {
             'Content-Type':'application/json'
