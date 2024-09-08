@@ -11,6 +11,16 @@ CREATE TABLE users (
     location VARCHAR(255) 
 );
 
+alter table users
+add column agentType ENUM('desk-agent', 'field-agent');
+
+alter table users
+add column livelocations VARCHAR(255);
+
+
+
+
+
 CREATE TABLE agentlocation (
     id INT AUTO_INCREMENT PRIMARY KEY,
     from_location VARCHAR(255) NOT NULL,

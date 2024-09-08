@@ -92,11 +92,15 @@ const Location = () => {
   const [isFieldWork, setIsFieldWork] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('');
   const [destination, setDestination] = useState('');
+  const [livelocation, setLiveLocations] = useState('');
+  const [userType, setUserType] = useState('');
+  
 
   useEffect(() => {
     const fetchUserLocation = async () => {
       const userData = JSON.parse(sessionStorage.getItem('user'));
       const userId = userData.personelid;
+      setUserType(userData.agentType)
 
       try {
         const response = await fetch(`http://localhost:5000/api/user/location/${userId}`);
@@ -128,6 +132,7 @@ const Location = () => {
     const locationData = {
       personelid: userId,
       location: isFieldWork ? destination : currentLocation,
+      livelocation: livelocation,
     };
     if (!locationData?.location) {
       toast.error('Please enter a valid location',{
@@ -175,10 +180,11 @@ const Location = () => {
               type="checkbox" 
               className="sr-only peer"
               checked={isFieldWork}
+              disabled={userType === 'desk-agent'}
               require
               onChange={(e) => setIsFieldWork(e.target.checked)}
             />
-            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <div  className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             <span className="ml-3 text-sm font-medium text-gray-900">
               {isFieldWork ? "Field Work" : "Office Work"}
             </span>
@@ -187,8 +193,22 @@ const Location = () => {
 
         {isFieldWork ? (
           <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Locations">
+              Live Locations
+            </label>
+            <p className="text-xs mb-4 text-gray-400">Go to Google maps, Click on the profile icon, the to location sharing, input atleast 8 hours of sharing and paste the link here</p>
+            <input
+              id="livelocation"
+              type="text"
+              value={livelocation}
+              onChange={(e) => setLiveLocations(e.target.value)}
+              className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter your live locations"
+            />
+
+
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="destination">
-              Destination
+              Destination Locations
             </label>
             <input
               id="destination"

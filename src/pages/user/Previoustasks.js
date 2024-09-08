@@ -99,6 +99,7 @@ function PreviousTasks() {
       const userId = userData.personelid;
 
       const response = await fetch(`http://localhost:5000/api/tasks/agent/${userId}`);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch tasks');
       }
@@ -115,7 +116,7 @@ function PreviousTasks() {
       setLoading(false);
     } catch (err) {
       console.error('Error fetching tasks:', err);
-      setError('Failed to load tasks. Please try again later.');
+      setError('Failed to load tasks. Please try again later.',);
       setLoading(false);
     }
   };

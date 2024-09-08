@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Register = () => {
-const [accountType, setAccountType] = useState('agent');
+const [agentType, setagentType] = useState('');
 const [firstName, setFirstName]=useState('')
 const [lastName, setLastName]=useState('')
 const [email, setEmail]=useState('')
@@ -17,13 +17,13 @@ const handleSubmit = async (e) => {
     alert("Passwords do not match");
     return;
   }
-  if (!accountType) {
+  if (!agentType) {
     alert("Please select a account type");
     return;
   }
 
   const user = {
-    accountType,
+    agentType,
     firstName,
     lastName,
     personelid,
@@ -66,29 +66,28 @@ const handleSubmit = async (e) => {
           <div className="mb-4"> 
             <p className='text-sm text-black text-left'>Enter your details below to get started</p>
             <label className="hidden text-gray-300 text-left mb-1">Account type</label>
-            <div className=" space-x-4 hidden">
+            <div className=" space-x-4 flex">
               <label className="flex items-center">
                 <input 
                   type="radio" 
-                  name="accountType"
-                  value="admin"
-                  checked={accountType === 'admin'}
-                  onChange={(e) => setAccountType(e.target.value)} 
+                  name="agentType"
+                  value="field-agent"
+                  checked={agentType === 'field-agent'}
+                  onChange={(e) => setagentType(e.target.value)} 
                   className="form-radio text-red-600 w-4 h-4" 
                 />
-                <span className="ml-2">Admin</span>
+                <span className="ml-2">Field Agent</span>
               </label>
               <label className="flex items-center">
                 <input 
                   type="radio"
-                  required 
-                  name="accountType" 
-                  value="agent" 
-                  checked={accountType === 'agent'}
-                  onChange={(e) => setAccountType(e.target.value)}
+                  name="agentType" 
+                  value="desk-agent" 
+                  checked={agentType === 'desk-agent'}
+                  onChange={(e) => setagentType(e.target.value)}
                   className="form-radio text-red-600 w-4 h-4" 
                 />
-                <span className="ml-2">Agent</span>
+                <span className="ml-2">Desk Agent</span>
               </label>
             </div>
           </div>
@@ -129,6 +128,19 @@ const handleSubmit = async (e) => {
               className="w-full px-3 py-2 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+          {/* select agent type
+          <div className="mb-4 flex items-center">
+            <select
+              required
+              value={agentType}
+              onChange={(e) => setagentType(e.target.value)}
+            className="w-full px-3 py-2 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+              <option value="guardian" className="text-gray-400">--Select Agent Type--</option>
+              <option value="field-agent">Field Agent</option>
+              <option value="desk-agent">Desk Agent</option>
+            </select>
+          </div> */}
+
           <div className="mb-4">
             <input 
               type="text"

@@ -29,10 +29,10 @@ const handleSubmit = async (e) => {
           position: 'top-right',
         });
         
-        if (userData.accountType==='agent'){
-          window.location.href='/user/personaldetails';
-        }else{
+        if (userData.accountType==='admin'){
           window.location.href='/admin/adminpersonaldetails';
+        }else{
+          window.location.href='/user/personaldetails';
         }
       }else{
         console.log('Login failed', response);

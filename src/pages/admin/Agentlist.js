@@ -43,6 +43,7 @@ function Agentlist() {
                 <th className="px-4 py-2 text-start border border-gray-400">Personnel ID</th>
                 <th className="px-4 py-2 text-start border border-gray-400">Account Type</th>
                 <th className="px-4 py-2 text-start border border-gray-400">Location</th>
+                <th className="px-4 py-2 text-start border border-gray-400">Live&nbsp;Locations</th>
               </tr>
             </thead>
             <tbody>
@@ -52,11 +53,23 @@ function Agentlist() {
                   <td className="px-4 py-2 border border-black">{agent.email}</td>
                   <td className="px-4 py-2 border border-black">{agent.phone}</td>
                   <td className="px-4 py-2 border border-black">{agent.personelid}</td>
-                  <td className="px-4 py-2 border border-black">{agent.accountType}</td>
+                  <td className="px-4 py-2 border border-black">{agent.agentType}</td>
                   <td className="px-4 py-2 border border-black">
                     {agent.location ? (
                       <button
                         onClick={() => handleViewLocation(agent.location)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                      >
+                        View
+                      </button>
+                    ) : (
+                      'NA'
+                    )}
+                  </td>
+                  <td className="px-4 py-2 border border-black">
+                    {agent.livelocations ? (
+                      <button
+                        onClick={() => handleViewLocation(agent.livelocations)}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
                       >
                         View

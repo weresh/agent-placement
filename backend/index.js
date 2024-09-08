@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-
+ 
 // connect to mysql database
 const db = mysql.createConnection({
     host: 'localhost',
@@ -34,15 +34,15 @@ app.get('/', (req, res) => {
 // Register route
 app.post('/api/register', async (req, res) => {
   console.log("Executed", req.body);
-    const { accountType , firstName, lastName, email, phone, personelid, password } = req.body;
-  
+    const { agentType, firstName, lastName, email, phone, personelid, password } = req.body;
+  const accountType='agent'
     // Insert user into the database
     const query = `
-      INSERT INTO users (accountType , firstName, lastName, email, phone, personelid, password  )
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO users (agentType, accountType, firstName, lastName, email, phone, personelid, password  )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
    
-    const values = [accountType, firstName, lastName, email, phone, personelid, password];
+    const values = [agentType, accountType , firstName, lastName, email, phone, personelid, password];
   
     db.query(query, values, (err, result) => {
       if (err) {
@@ -85,6 +85,7 @@ app.post('/api/user/login', async (req, res) => {
        accountType:user.accountType,
        firstName:user.firstName,
        lastName:user.lastName,
+       agentType:user.agentType,
        email:user.email,
        phone:user.phone,
        personelid:user.personelid,
@@ -386,7 +387,7 @@ app.delete('/api/tasks/:id', (req, res) => {
 
 // fetch work assigned to each agent:
 app.get('/api/tasks/agent/:id', (req, res) => {
-  const agentId = req.params.id;
+  const agentId = req.params.id; 
 
   const query = 'SELECT * FROM tasks WHERE assigned_agent = ?';
 
@@ -396,12 +397,13 @@ app.get('/api/tasks/agent/:id', (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
-
-    if (results.length === 0) {
-      res.status(404).json({ message: 'No tasks found for this agent' });
-    } else {
-      res.status(200).json(results);
-    }
+    // console.log(results);
+    res.status(200).json(results);
+    // if (results.length === 0) {
+    //   res.status(404).json({ message: 'No tasks found for this agent' });
+    // } else {
+    //   res.status(200).json(results);
+    // }
   });
 });
 
@@ -454,18 +456,18 @@ app.post('/api/completionreport/:userId', (req, res) => {
 
 
 app.post('/api/user/updateLocation', (req, res) => {
-  const { personelid, location } = req.body;
-  console.log(personelid, location);
+  const { personelid, location, livelocation } = req.body;
 
-  const query = 'UPDATE users SET location = ? WHERE personelid = ?';
-  db.query(query, [location, personelid], (error, results) => {
+  const query = 'UPDATE users SET location = ?, livelocations = ? WHERE personelid = ?';
+  db.query(query, [location, livelocation, personelid], (error, results) => {
     if (error) {
-      console.error('Error updating location:', error);
-      return res.status(500).send('Error updating location');
+      console.error('Error updating location and live location:', error);
+      return res.status(500).send('Error updating location and live location');
     }
-    res.send('Location updated successfully');
+    res.send('Location and live location updated successfully');
   });
 });
+
 
 
 app.get('/api/user/location/:id', (req, res) => {

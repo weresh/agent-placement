@@ -325,33 +325,6 @@ const Inbox = () => {
 
   
 
-  // const handleUpdate = async () => {
-  //   if (!window.confirm('Are you sure you want to update the tasks?')) return;
-  //   try {
-  //     const response = await fetch('http://localhost:5000/api/tasks/update', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(selectedAgents),
-  //     });
-  //     if (response.ok) {
-  //       console.log('Tasks updated successfully');
-  //       toast.success('Tasks updated successfully', {
-  //         position: 'top-center',
-  //         duration: 3000
-  //       });
-  //     } else {
-  //       throw new Error('Failed to update tasks');
-  //     }
-  //   } catch (error) {
-  //     toast.error('Error updating tasks', {
-  //       position: 'top-center',
-  //       duration: 3000
-  //     });
-  //     console.error('Error updating tasks:', error);
-  //   }
-  // };
 
   const handleDelete = async (taskId) => {
     if (!window.confirm('Are you sure you want to delete this task?')) return;

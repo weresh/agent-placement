@@ -31,7 +31,7 @@ function Workassigned() {
       setLoading(false);
     } catch (err) {
       console.error('Error fetching tasks:', err);
-      setError('Failed to load tasks. Please try again later.');
+      setError('Failed to load tasks. Please try again laterrr.', err);
       setLoading(false);
     }
   };
@@ -116,6 +116,13 @@ function Workassigned() {
               </tr>
             </thead>
             <tbody>
+              {/* if no filteredWork  */}
+              {filteredWork.length === 0 && (
+                <tr>
+                  <td colSpan="7" className="text-center py-4">No tasks found.</td>
+                </tr>
+              )}
+              
               {filteredWork.map(works => (
                 <tr key={works.caseid}>
                   <td className="px-4 py-2 border border-black">{works.caseid}</td>
